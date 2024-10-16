@@ -1,0 +1,535 @@
+[
+    {
+        "id": "9c8d5dd92d377ae7",
+        "type": "change",
+        "z": "9170653ac436c1aa",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "soc",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 390,
+        "y": 60,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "de417502891bb773",
+        "type": "change",
+        "z": "9170653ac436c1aa",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "setpoint",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 400,
+        "y": 20,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c2b63f42dafb3a2c",
+        "type": "inject",
+        "z": "9170653ac436c1aa",
+        "name": "Battery Maintenance",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "*/1 20-22 * * *",
+        "once": false,
+        "onceDelay": "",
+        "topic": "",
+        "payload": "-50",
+        "payloadType": "num",
+        "x": 180,
+        "y": 160,
+        "wires": [
+            [
+                "728bdd3a1f9ea839"
+            ]
+        ]
+    },
+    {
+        "id": "8fe1fa924d62aa4c",
+        "type": "victron-output-ess",
+        "z": "9170653ac436c1aa",
+        "service": "com.victronenergy.settings",
+        "path": "/Settings/CGwacs/AcPowerSetPoint",
+        "serviceObj": {
+            "service": "com.victronenergy.settings",
+            "name": "Venus settings"
+        },
+        "pathObj": {
+            "path": "/Settings/CGwacs/AcPowerSetPoint",
+            "type": "integer",
+            "name": "Grid set-point (W)",
+            "writable": true
+        },
+        "initial": "",
+        "name": "",
+        "onlyChanges": false,
+        "x": 640,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "2d95a991de2b7e0b",
+        "type": "victron-output-settings",
+        "z": "9170653ac436c1aa",
+        "service": "com.victronenergy.settings",
+        "path": "/Settings/SystemSetup/MaxChargeCurrent",
+        "serviceObj": {
+            "service": "com.victronenergy.settings",
+            "name": "Venus settings"
+        },
+        "pathObj": {
+            "path": "/Settings/SystemSetup/MaxChargeCurrent",
+            "type": "float",
+            "name": "DVCC system max charge current (A DC)",
+            "writable": true
+        },
+        "name": "",
+        "onlyChanges": false,
+        "x": 710,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "a7b035271bc15404",
+        "type": "victron-input-battery",
+        "z": "9170653ac436c1aa",
+        "service": "com.victronenergy.battery/512",
+        "path": "/Soc",
+        "serviceObj": {
+            "service": "com.victronenergy.battery/512",
+            "name": "Pylontech battery"
+        },
+        "pathObj": {
+            "path": "/Soc",
+            "type": "float",
+            "name": "State of charge (%)"
+        },
+        "name": "",
+        "onlyChanges": true,
+        "x": 170,
+        "y": 100,
+        "wires": [
+            [
+                "9c8d5dd92d377ae7"
+            ]
+        ]
+    },
+    {
+        "id": "8e12cbf0a01bb1f8",
+        "type": "victron-input-ess",
+        "z": "9170653ac436c1aa",
+        "service": "com.victronenergy.settings",
+        "path": "/Settings/CGwacs/AcPowerSetPoint",
+        "serviceObj": {
+            "service": "com.victronenergy.settings",
+            "name": "Venus settings"
+        },
+        "pathObj": {
+            "path": "/Settings/CGwacs/AcPowerSetPoint",
+            "type": "integer",
+            "name": "Grid set-point (W)"
+        },
+        "name": "",
+        "onlyChanges": true,
+        "x": 160,
+        "y": 40,
+        "wires": [
+            [
+                "de417502891bb773"
+            ]
+        ]
+    },
+    {
+        "id": "2439ebfd5043fba6",
+        "type": "pushover",
+        "z": "9170653ac436c1aa",
+        "name": "",
+        "device": "",
+        "title": "Battery Maintenance Discharge Finished",
+        "priority": "0",
+        "sound": "falling",
+        "url": "",
+        "url_title": "",
+        "html": false,
+        "x": 840,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "46cdf9e331b954e7",
+        "type": "pushover",
+        "z": "9170653ac436c1aa",
+        "name": "",
+        "device": "",
+        "title": "Battery Maintenance Discharge Start Stage 1",
+        "priority": "0",
+        "sound": "falling",
+        "url": "",
+        "url_title": "",
+        "html": false,
+        "x": 850,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "4b0f56724399bf55",
+        "type": "switch",
+        "z": "9170653ac436c1aa",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "-1800",
+                "vt": "num"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 1,
+        "x": 410,
+        "y": 100,
+        "wires": [
+            [
+                "9df6deac9419600a"
+            ]
+        ]
+    },
+    {
+        "id": "9df6deac9419600a",
+        "type": "delay",
+        "z": "9170653ac436c1aa",
+        "name": "Delay Message",
+        "pauseType": "rate",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "day",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": true,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 580,
+        "y": 80,
+        "wires": [
+            [
+                "46cdf9e331b954e7"
+            ]
+        ]
+    },
+    {
+        "id": "87daf83456aa8845",
+        "type": "inject",
+        "z": "9170653ac436c1aa",
+        "name": "Fail Safe Grid Setpoint",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "01 23 * * *",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "-50",
+        "payloadType": "num",
+        "x": 190,
+        "y": 340,
+        "wires": [
+            [
+                "8fe1fa924d62aa4c"
+            ]
+        ]
+    },
+    {
+        "id": "a83960f2c22de712",
+        "type": "switch",
+        "z": "9170653ac436c1aa",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "-6000",
+                "vt": "num"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 1,
+        "x": 410,
+        "y": 180,
+        "wires": [
+            [
+                "6919d157fda0296c"
+            ]
+        ]
+    },
+    {
+        "id": "6919d157fda0296c",
+        "type": "delay",
+        "z": "9170653ac436c1aa",
+        "name": "Delay Message",
+        "pauseType": "rate",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "day",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": true,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 580,
+        "y": 160,
+        "wires": [
+            [
+                "fa81d688fb1e502f"
+            ]
+        ]
+    },
+    {
+        "id": "fa81d688fb1e502f",
+        "type": "pushover",
+        "z": "9170653ac436c1aa",
+        "name": "",
+        "device": "",
+        "title": "Battery Maintenance Discharge Stage 3",
+        "priority": "0",
+        "sound": "falling",
+        "url": "",
+        "url_title": "",
+        "html": false,
+        "x": 840,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "ce60512c0589e51f",
+        "type": "change",
+        "z": "9170653ac436c1aa",
+        "name": "Change to Text",
+        "rules": [
+            {
+                "t": "change",
+                "p": "payload",
+                "pt": "msg",
+                "from": "-1",
+                "fromt": "num",
+                "to": "Charge Current set to Max, Battery Maintenance Discharge Finished",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 580,
+        "y": 240,
+        "wires": [
+            [
+                "2439ebfd5043fba6"
+            ]
+        ]
+    },
+    {
+        "id": "30a90f2191e389e7",
+        "type": "switch",
+        "z": "9170653ac436c1aa",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "-3000",
+                "vt": "num"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 1,
+        "x": 410,
+        "y": 140,
+        "wires": [
+            [
+                "e173c5dd7b432825"
+            ]
+        ]
+    },
+    {
+        "id": "e173c5dd7b432825",
+        "type": "delay",
+        "z": "9170653ac436c1aa",
+        "name": "Delay Message",
+        "pauseType": "rate",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "day",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": true,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 580,
+        "y": 120,
+        "wires": [
+            [
+                "9ed99878628094ac"
+            ]
+        ]
+    },
+    {
+        "id": "9ed99878628094ac",
+        "type": "pushover",
+        "z": "9170653ac436c1aa",
+        "name": "",
+        "device": "",
+        "title": "Battery Maintenance Discharge Stage 2",
+        "priority": "0",
+        "sound": "falling",
+        "url": "",
+        "url_title": "",
+        "html": false,
+        "x": 840,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "728bdd3a1f9ea839",
+        "type": "function",
+        "z": "9170653ac436c1aa",
+        "name": "SOC alpha",
+        "func": "// Initialize soc and gridsetpoint with system values\nvar soc = flow.get(\"soc\");\nvar currentTime = new Date();\nvar currentHour = currentTime.getHours();\nvar currentMinute = currentTime.getMinutes();\nvar gridsetpoint = -flow.get(\"setpoint\");\nvar dvcc = 0; // Variable for DVCC output\n\n// Initialize output object\nvar output = {};\n\n// Continuous checking from 20:00 to 20:59\nif (currentHour === 20) {\n    if (soc > 40) {\n        output.gridsetpoint = -1800; // SOC above 40%\n    } else {\n        output.gridsetpoint = -50;    // SOC 40% or below\n    }\n}\n\n// Check for 21:00\nif (currentHour === 21 && currentMinute === 0) {\n    if (soc >= 50) {\n        output.gridsetpoint = -3000; // SOC 50% or above\n    } else if (soc === 40) {\n        output.gridsetpoint = -50;    // SOC exactly 40%\n    } else {\n        output.gridsetpoint = -50;     // SOC below 40%\n    }\n}\n\n// Continuous checking from 21:01 to 21:59\nif (currentHour === 21 && currentMinute > 0) {\n    if (soc >= 50) {\n        output.gridsetpoint = -3000; // SOC 50% or above\n    } else if (soc === 40) {\n        output.gridsetpoint = -50;    // SOC exactly 40%\n    } else {\n        output.gridsetpoint = -50;     // SOC below 40%\n    }\n}\n\n// Continuous checking from 22:00 to 22:29\nif (currentHour === 22) {\n    if (soc > 40) {\n        output.gridsetpoint = -6000;  // SOC above 40%\n    } else {\n        output.gridsetpoint = -50;     // SOC 40% or below\n    }\n\n    // Check for 22:30\n    if (currentMinute === 30) {\n        if (soc >= 40) {\n            output.gridsetpoint = -6900;  // SOC 40% or above, discharge to 38%\n        }\n    }\n\n    // Continuous checking from 22:30 to 22:59\n    if (currentMinute >= 30 && currentMinute < 60) {\n        if (soc <= 38) {\n            output.gridsetpoint = -50;     // SOC 38% or below, reset to -50\n        }\n        // Reset to -50 at 22:59\n        if (currentMinute === 59) {\n            output.gridsetpoint = -50;     // Reset at 22:59\n        }\n    }\n}\n\n// At 23:00, reset to -50 and set DVCC\nif (currentHour === 23 && currentMinute === 0) {\n    output.gridsetpoint = -50;\n    output.dvcc = -1;\n}\n\n// Prepare output to send\nvar messages = [];\nif (output.gridsetpoint !== undefined) {\n    messages.push({ payload: output.gridsetpoint, topic: \"gridsetpoint\" });\n}\nif (output.dvcc !== undefined) {\n    messages.push({ payload: output.dvcc, topic: \"dvcc\" });\n}\n\n// Return messages or null if empty\nreturn messages.length > 0 ? messages : null;\n",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 230,
+        "y": 260,
+        "wires": [
+            [
+                "14cd096a18e82179",
+                "a83960f2c22de712",
+                "30a90f2191e389e7",
+                "4b0f56724399bf55",
+                "8fe1fa924d62aa4c"
+            ],
+            [
+                "2d95a991de2b7e0b",
+                "ce60512c0589e51f"
+            ]
+        ],
+        "info": "How the Updated Code Works\n\n    Initialization:\n        The code initializes the SOC (State of Charge) and the current time.\n        It sets up an output object to store values for gridsetpoint and dvcc.\n\n    Continuous Checking Logic:\n        20:00 to 20:59:\n            If the current hour is 20, it checks the SOC:\n                If SOC > 40%, set gridsetpoint to -1800.\n                If SOC ≤ 40%, set gridsetpoint to -50.\n        21:00:\n            At exactly 21:00, it checks the SOC:\n                If SOC ≥ 50%, set gridsetpoint to -3000.\n                If SOC = 40%, set gridsetpoint to -50.\n                For SOC < 40%, also set gridsetpoint to -50.\n        21:01 to 21:59:\n            Continues checking the SOC during this period:\n                If SOC ≥ 50%, set gridsetpoint to -3000.\n                If SOC = 40%, set gridsetpoint to -50.\n                For SOC < 40%, also set gridsetpoint to -50.\n        22:00 to 22:29:\n            The SOC is continuously checked:\n                If SOC > 40%, set gridsetpoint to -6000.\n                If SOC ≤ 40%, set gridsetpoint to -50.\n        22:30:\n            At exactly 22:30, it checks if SOC is 40% or above:\n                If yes, set gridsetpoint to -6900.\n        22:30 to 22:59:\n            Continues checking the SOC:\n                If SOC ≤ 38%, reset gridsetpoint to -50.\n                Also resets to -50 at 22:59.\n        23:00:\n            At exactly 23:00, resets gridsetpoint to -50 and sets dvcc to -1.\n\n    Output Preparation:\n        The code prepares messages based on the values set in the output object, sending them out as needed.\n\n"
+    },
+    {
+        "id": "14cd096a18e82179",
+        "type": "switch",
+        "z": "9170653ac436c1aa",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "-6900",
+                "vt": "num"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 1,
+        "x": 410,
+        "y": 220,
+        "wires": [
+            [
+                "cd1b83acb7950a01"
+            ]
+        ]
+    },
+    {
+        "id": "cd1b83acb7950a01",
+        "type": "delay",
+        "z": "9170653ac436c1aa",
+        "name": "Delay Message",
+        "pauseType": "rate",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "day",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": true,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 580,
+        "y": 200,
+        "wires": [
+            [
+                "a7b6bb0a01e771a0"
+            ]
+        ]
+    },
+    {
+        "id": "a7b6bb0a01e771a0",
+        "type": "pushover",
+        "z": "9170653ac436c1aa",
+        "name": "",
+        "device": "",
+        "title": "Battery Maintenance Discharge Stage 4",
+        "priority": "0",
+        "sound": "falling",
+        "url": "",
+        "url_title": "",
+        "html": false,
+        "x": 840,
+        "y": 220,
+        "wires": []
+    }
+]
