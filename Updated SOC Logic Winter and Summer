@@ -1,0 +1,580 @@
+[
+    {
+        "id": "9c8d5dd92d377ae7",
+        "type": "change",
+        "z": "9170653ac436c1aa",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "soc",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 390,
+        "y": 60,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "de417502891bb773",
+        "type": "change",
+        "z": "9170653ac436c1aa",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "setpoint",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 400,
+        "y": 20,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c2b63f42dafb3a2c",
+        "type": "inject",
+        "z": "9170653ac436c1aa",
+        "name": "Battery Maintenance",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "*/1 20-22 * * *",
+        "once": false,
+        "onceDelay": "",
+        "topic": "",
+        "payload": "payload",
+        "payloadType": "msg",
+        "x": 180,
+        "y": 160,
+        "wires": [
+            [
+                "3ee6a16159840106",
+                "c451bfe044854b5d"
+            ]
+        ]
+    },
+    {
+        "id": "8fe1fa924d62aa4c",
+        "type": "victron-output-ess",
+        "z": "9170653ac436c1aa",
+        "service": "com.victronenergy.settings",
+        "path": "/Settings/CGwacs/AcPowerSetPoint",
+        "serviceObj": {
+            "service": "com.victronenergy.settings",
+            "name": "Venus settings"
+        },
+        "pathObj": {
+            "path": "/Settings/CGwacs/AcPowerSetPoint",
+            "type": "integer",
+            "name": "Grid set-point (W)",
+            "writable": true
+        },
+        "initial": "",
+        "name": "",
+        "onlyChanges": false,
+        "x": 640,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "2d95a991de2b7e0b",
+        "type": "victron-output-settings",
+        "z": "9170653ac436c1aa",
+        "service": "com.victronenergy.settings",
+        "path": "/Settings/SystemSetup/MaxChargeCurrent",
+        "serviceObj": {
+            "service": "com.victronenergy.settings",
+            "name": "Venus settings"
+        },
+        "pathObj": {
+            "path": "/Settings/SystemSetup/MaxChargeCurrent",
+            "type": "float",
+            "name": "DVCC system max charge current (A DC)",
+            "writable": true
+        },
+        "name": "",
+        "onlyChanges": false,
+        "x": 710,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "a7b035271bc15404",
+        "type": "victron-input-battery",
+        "z": "9170653ac436c1aa",
+        "service": "com.victronenergy.battery/512",
+        "path": "/Soc",
+        "serviceObj": {
+            "service": "com.victronenergy.battery/512",
+            "name": "Pylontech battery"
+        },
+        "pathObj": {
+            "path": "/Soc",
+            "type": "float",
+            "name": "State of charge (%)"
+        },
+        "name": "",
+        "onlyChanges": true,
+        "x": 170,
+        "y": 100,
+        "wires": [
+            [
+                "9c8d5dd92d377ae7"
+            ]
+        ]
+    },
+    {
+        "id": "8e12cbf0a01bb1f8",
+        "type": "victron-input-ess",
+        "z": "9170653ac436c1aa",
+        "service": "com.victronenergy.settings",
+        "path": "/Settings/CGwacs/AcPowerSetPoint",
+        "serviceObj": {
+            "service": "com.victronenergy.settings",
+            "name": "Venus settings"
+        },
+        "pathObj": {
+            "path": "/Settings/CGwacs/AcPowerSetPoint",
+            "type": "integer",
+            "name": "Grid set-point (W)"
+        },
+        "name": "",
+        "onlyChanges": true,
+        "x": 160,
+        "y": 40,
+        "wires": [
+            [
+                "de417502891bb773"
+            ]
+        ]
+    },
+    {
+        "id": "2439ebfd5043fba6",
+        "type": "pushover",
+        "z": "9170653ac436c1aa",
+        "name": "",
+        "device": "",
+        "title": "Battery Maintenance Discharge Finished",
+        "priority": "0",
+        "sound": "falling",
+        "url": "",
+        "url_title": "",
+        "html": false,
+        "x": 840,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "46cdf9e331b954e7",
+        "type": "pushover",
+        "z": "9170653ac436c1aa",
+        "name": "",
+        "device": "",
+        "title": "Battery Maintenance Discharge Start Stage 1",
+        "priority": "0",
+        "sound": "falling",
+        "url": "",
+        "url_title": "",
+        "html": false,
+        "x": 850,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "4b0f56724399bf55",
+        "type": "switch",
+        "z": "9170653ac436c1aa",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "-1800",
+                "vt": "num"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 1,
+        "x": 410,
+        "y": 100,
+        "wires": [
+            [
+                "9df6deac9419600a"
+            ]
+        ]
+    },
+    {
+        "id": "9df6deac9419600a",
+        "type": "delay",
+        "z": "9170653ac436c1aa",
+        "name": "Delay Message",
+        "pauseType": "rate",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "day",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": true,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 580,
+        "y": 80,
+        "wires": [
+            [
+                "46cdf9e331b954e7"
+            ]
+        ]
+    },
+    {
+        "id": "87daf83456aa8845",
+        "type": "inject",
+        "z": "9170653ac436c1aa",
+        "name": "Fail Safe Grid Setpoint",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "29 23 * * *",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "-60",
+        "payloadType": "num",
+        "x": 190,
+        "y": 260,
+        "wires": [
+            [
+                "653bd1c7a254f51c",
+                "ce60512c0589e51f"
+            ]
+        ]
+    },
+    {
+        "id": "a83960f2c22de712",
+        "type": "switch",
+        "z": "9170653ac436c1aa",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "-6000",
+                "vt": "num"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 1,
+        "x": 410,
+        "y": 180,
+        "wires": [
+            [
+                "6919d157fda0296c"
+            ]
+        ]
+    },
+    {
+        "id": "6919d157fda0296c",
+        "type": "delay",
+        "z": "9170653ac436c1aa",
+        "name": "Delay Message",
+        "pauseType": "rate",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "day",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": true,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 580,
+        "y": 160,
+        "wires": [
+            [
+                "fa81d688fb1e502f"
+            ]
+        ]
+    },
+    {
+        "id": "fa81d688fb1e502f",
+        "type": "pushover",
+        "z": "9170653ac436c1aa",
+        "name": "",
+        "device": "",
+        "title": "Battery Maintenance Discharge Stage 3",
+        "priority": "0",
+        "sound": "falling",
+        "url": "",
+        "url_title": "",
+        "html": false,
+        "x": 840,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "ce60512c0589e51f",
+        "type": "change",
+        "z": "9170653ac436c1aa",
+        "name": "Change to Text",
+        "rules": [
+            {
+                "t": "change",
+                "p": "payload",
+                "pt": "msg",
+                "from": "-1",
+                "fromt": "num",
+                "to": "Charge Current set to Max, Battery Maintenance Discharge Finished",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 580,
+        "y": 240,
+        "wires": [
+            [
+                "2439ebfd5043fba6"
+            ]
+        ]
+    },
+    {
+        "id": "30a90f2191e389e7",
+        "type": "switch",
+        "z": "9170653ac436c1aa",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "-3000",
+                "vt": "num"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 1,
+        "x": 410,
+        "y": 140,
+        "wires": [
+            [
+                "e173c5dd7b432825"
+            ]
+        ]
+    },
+    {
+        "id": "e173c5dd7b432825",
+        "type": "delay",
+        "z": "9170653ac436c1aa",
+        "name": "Delay Message",
+        "pauseType": "rate",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "day",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": true,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 580,
+        "y": 120,
+        "wires": [
+            [
+                "9ed99878628094ac"
+            ]
+        ]
+    },
+    {
+        "id": "9ed99878628094ac",
+        "type": "pushover",
+        "z": "9170653ac436c1aa",
+        "name": "",
+        "device": "",
+        "title": "Battery Maintenance Discharge Stage 2",
+        "priority": "0",
+        "sound": "falling",
+        "url": "",
+        "url_title": "",
+        "html": false,
+        "x": 840,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "14cd096a18e82179",
+        "type": "switch",
+        "z": "9170653ac436c1aa",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "-6900",
+                "vt": "num"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 1,
+        "x": 410,
+        "y": 220,
+        "wires": [
+            [
+                "cd1b83acb7950a01"
+            ]
+        ]
+    },
+    {
+        "id": "cd1b83acb7950a01",
+        "type": "delay",
+        "z": "9170653ac436c1aa",
+        "name": "Delay Message",
+        "pauseType": "rate",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "day",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": true,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 580,
+        "y": 200,
+        "wires": [
+            [
+                "a7b6bb0a01e771a0"
+            ]
+        ]
+    },
+    {
+        "id": "a7b6bb0a01e771a0",
+        "type": "pushover",
+        "z": "9170653ac436c1aa",
+        "name": "",
+        "device": "",
+        "title": "Battery Maintenance Discharge Stage 4",
+        "priority": "0",
+        "sound": "falling",
+        "url": "",
+        "url_title": "",
+        "html": false,
+        "x": 840,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "653bd1c7a254f51c",
+        "type": "function",
+        "z": "9170653ac436c1aa",
+        "name": "Fail Safe",
+        "func": "// Initialize variables\nvar currentTime = new Date();\nvar currentHour = currentTime.getHours();\nvar currentMinute = currentTime.getMinutes();\nvar output = {};\n\n// Check if the time is 23:29\nif (currentHour === 23 && currentMinute === 29) {\n    output.gridsetpoint = -60; // Set gridsetpoint to -60\n    output.dvcc = -1;          // Set dvcc to -1\n}\n\n// Prepare output messages\nvar messages = [];\nif (output.gridsetpoint !== undefined) {\n    messages.push({ payload: output.gridsetpoint, topic: \"gridsetpoint\" });\n}\nif (output.dvcc !== undefined) {\n    messages.push({ payload: output.dvcc, topic: \"dvcc\" });\n}\n\n// Return messages or null if empty\nreturn messages.length > 0 ? messages : null;\n",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 240,
+        "y": 320,
+        "wires": [
+            [
+                "8fe1fa924d62aa4c"
+            ],
+            [
+                "2d95a991de2b7e0b"
+            ]
+        ]
+    },
+    {
+        "id": "864180fa9c2b488c",
+        "type": "inject",
+        "z": "9170653ac436c1aa",
+        "name": "Manual -60",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "-60",
+        "payloadType": "num",
+        "x": 230,
+        "y": 380,
+        "wires": [
+            [
+                "8fe1fa924d62aa4c"
+            ]
+        ]
+    },
+    {
+        "id": "c451bfe044854b5d",
+        "type": "function",
+        "z": "9170653ac436c1aa",
+        "name": "SOC",
+        "func": "// Constants for SOC thresholds\nconst SOC_THRESHOLD_60 = 60;\nconst SOC_THRESHOLD_50 = 50;\nconst SOC_THRESHOLD_40 = 40;\nconst SOC_THRESHOLD_37 = 37;\nconst SOC_THRESHOLD_35 = 35;\nconst SOC_THRESHOLD_29 = 29;\nconst SOC_THRESHOLD_45 = 45;\nconst SOC_THRESHOLD_42 = 42;\nconst SOC_THRESHOLD_20 = 20;\n\n// Initialize variables\nvar soc = flow.get(\"soc\");  // State of Charge (SOC)\nvar currentTime = new Date();\nvar currentHour = currentTime.getHours();\nvar currentMinute = currentTime.getMinutes();\nvar output = {};\n\n// Determine if it's summer (April to October) or winter (November to March)\nvar isSummer = (currentTime.getMonth() >= 3 && currentTime.getMonth() <= 9); // April to October\nvar isWinter = (currentTime.getMonth() >= 10 || currentTime.getMonth() <= 2); // Nov to Mar\n\n// Helper function to set output\nfunction setOutput(setpoint) {\n    output.gridsetpoint = setpoint;\n}\n\n// Initialize default value\nsetOutput(-60); // Set default to -60 initially\n\n// Winter Logic - Continuous SOC monitoring from 22:30 to 23:19\nif (isWinter) {\n    if (currentHour === 22 && currentMinute >= 30) {\n        // From 22:30 to 22:34, warming the batteries\n        if (currentMinute < 35) {\n            // Start at -1800 for the first 5 minutes\n            setOutput(soc >= SOC_THRESHOLD_60 ? -1800 : (soc >= SOC_THRESHOLD_40 ? -1800 : -60));\n        } else {\n            // From 22:35 onwards, start at -4500 if SOC is 60% or higher\n            if (soc >= SOC_THRESHOLD_60) {\n                setOutput(-4500);\n            } else if (soc >= SOC_THRESHOLD_50) {\n                setOutput(-3000);  // Change to -3000 if SOC reaches 50%\n            } else if (soc >= SOC_THRESHOLD_40) {\n                setOutput(-1800);  // Change to -1800 if SOC reaches 40%\n            } else if (soc >= SOC_THRESHOLD_37) {\n                setOutput(-60);    // Change to -60 if SOC reaches 37%\n            } else {\n                setOutput(-60);    // Default -60 if SOC is below 37%\n            }\n        }\n    }\n\n    // From 23:00 to 23:19, set gridsetpoint to -6900 if SOC is 37% or higher\n    if (currentHour === 23 && currentMinute < 20) {\n        if (soc >= SOC_THRESHOLD_37) {\n            setOutput(-6900);\n        } else if (soc <= SOC_THRESHOLD_20) {\n            setOutput(-60);  // If SOC drops to 20%, revert to -60\n        }\n    }\n\n    // Between 23:20 and 23:27, always reset to -60\n    if (currentHour === 23 && currentMinute >= 20 && currentMinute <= 27) {\n        setOutput(-60);\n    }\n} \n\n// Summer Logic - Continuous SOC monitoring from 20:00 to 23:19\nelse if (isSummer) {\n    // From 20:00 to 20:59\n    if (currentHour === 20) {\n        if (soc >= SOC_THRESHOLD_60) {\n            setOutput(-2500); // Set to -2500 if SOC >= 60%\n        } else if (soc >= SOC_THRESHOLD_50) {\n            setOutput(-1800); // Set to -1800 if SOC >= 50%\n        } else if (soc <= SOC_THRESHOLD_40) {\n            setOutput(-60);   // Set to -60 if SOC <= 40%\n        }\n    } \n    // From 21:00 to 21:59\n    else if (currentHour === 21) {\n        if (soc >= SOC_THRESHOLD_60) {\n            setOutput(-3500); // Set to -3500 if SOC >= 60%\n        } else if (soc <= SOC_THRESHOLD_40) {\n            setOutput(-60);   // Set to -60 if SOC <= 40%\n        } else {\n            setOutput(-1800); // Set to -1800 if SOC is between 40% and 60%\n        }\n    } \n    // From 22:00 to 22:29\n    else if (currentHour === 22 && currentMinute < 30) {\n        if (soc >= SOC_THRESHOLD_60) {\n            setOutput(-6000); // Set to -6000 if SOC >= 60%\n        } else if (soc <= SOC_THRESHOLD_40) {\n            setOutput(-60);   // Set to -60 if SOC <= 40%\n        }\n    } \n    // From 22:30 to 22:59\n    else if (currentHour === 22 && currentMinute >= 30) {\n        if (soc >= SOC_THRESHOLD_45) {\n            setOutput(-6900); // Set to -6900 if SOC >= 45%\n        } else if (soc <= SOC_THRESHOLD_37) {\n            setOutput(-60);   // Set to -60 if SOC <= 37%\n        }\n    } \n    // From 23:00 to 23:19\n    else if (currentHour === 23 && currentMinute < 20) {\n        if (soc >= SOC_THRESHOLD_37) {\n            setOutput(-6900); // Set to -6900 if SOC >= 37%\n        } else if (soc <= SOC_THRESHOLD_29) {\n            setOutput(-60);   // Set to -60 if SOC <= 29%\n        }\n    }\n\n    // Between 23:20 and 23:27, always reset to -60\n    if (currentHour === 23 && currentMinute >= 20 && currentMinute <= 27) {\n        setOutput(-60);\n    }\n}\n\n// Prepare output messages\nvar messages = [];\nif (output.gridsetpoint !== undefined && output.gridsetpoint !== -60) {\n    messages.push({ payload: output.gridsetpoint });\n}\n\nreturn messages;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 230,
+        "y": 220,
+        "wires": [
+            [
+                "8fe1fa924d62aa4c",
+                "14cd096a18e82179",
+                "a83960f2c22de712",
+                "30a90f2191e389e7",
+                "4b0f56724399bf55"
+            ]
+        ]
+    }
+]
